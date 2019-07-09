@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: false,
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="本文综合了rabbitmq官网安装文档和一篇博客，成功的安装和配置了rabbitmq">
+<meta property="og:type" content="article">
+<meta property="og:title" content="rabbitmq">
+<meta property="og:url" content="http://blog.cauyyl.com/2019/05/30/rabbitmq/index.html">
+<meta property="og:site_name" content="cauyyl&#39;s blog">
+<meta property="og:description" content="本文综合了rabbitmq官网安装文档和一篇博客，成功的安装和配置了rabbitmq">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-07-09T10:24:53.066Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="rabbitmq">
+<meta name="twitter:description" content="本文综合了rabbitmq官网安装文档和一篇博客，成功的安装和配置了rabbitmq">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="cauyyl's blog" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="http://blog.cauyyl.com/2019/05/30/rabbitmq/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>rabbitmq | cauyyl's blog</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?49dda87b49dbbc1ad399f958fac22240";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">cauyyl's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-首页">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-标签">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-分类">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-归档">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://blog.cauyyl.com/2019/05/30/rabbitmq/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="cauyyl">
+      <meta itemprop="description" content="腰横秋水雁翎刀">
+      <meta itemprop="image" content="https://cauyyl-blog.oss-cn-beijing.aliyuncs.com/shanzhi.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="cauyyl's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">rabbitmq
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-05-30 14:16:51" itemprop="dateCreated datePublished" datetime="2019-05-30T14:16:51+08:00">2019-05-30</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-07-09 18:24:53" itemprop="dateModified" datetime="2019-07-09T18:24:53+08:00">2019-07-09</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+              
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <span class="post-meta-item-text">Comments: </span>
+                <a href="/2019/05/30/rabbitmq/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/05/30/rabbitmq/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+                 Views:  
+                <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+              </span>
+            </span>
+          
+
+          <br>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>本文综合了rabbitmq官网安装文档和一篇博客，成功的安装和配置了rabbitmq<br> <a id="more"></a></p>
+<h2 id="1-ubuntu-install-rabbitmq"><a href="#1-ubuntu-install-rabbitmq" class="headerlink" title="1. ubuntu install rabbitmq"></a>1. ubuntu install rabbitmq</h2><p>原文地址：<br><code>https://www.rabbitmq.com/install-debian.html#apt</code><br><code>https://tecadmin.net/install-rabbitmq-server-on-ubuntu/</code></p>
+<h3 id="1-1-step-1"><a href="#1-1-step-1" class="headerlink" title="1.1. step 1"></a>1.1. step 1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># import PackageCloud signing key</span><br><span class="line">wget -O - &quot;https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey&quot; | sudo apt-key add -</span><br></pre></td></tr></table></figure>
+<h3 id="1-2-step-2"><a href="#1-2-step-2" class="headerlink" title="1.2. step 2"></a>1.2. step 2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"></span><br><span class="line">## Install RabbitMQ signing key</span><br><span class="line">sudo apt-key adv --keyserver &quot;hkps.pool.sks-keyservers.net&quot; --recv-keys &quot;0x6B73A36E6026DFCA&quot;</span><br><span class="line"></span><br><span class="line">## Install apt HTTPS transport</span><br><span class="line">sudo apt-get install apt-transport-https</span><br><span class="line"></span><br><span class="line">## Add Bintray repositories that provision latest RabbitMQ and Erlang 21.x releases</span><br><span class="line">sudo tee /etc/apt/sources.list.d/bintray.rabbitmq.list &lt;&lt;EOF</span><br><span class="line">deb https://dl.bintray.com/rabbitmq-erlang/debian bionic erlang-21.x</span><br><span class="line">deb https://dl.bintray.com/rabbitmq/debian bionic main</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">## Update package indices</span><br><span class="line">sudo apt-get update -y</span><br><span class="line"></span><br><span class="line">## Install rabbitmq-server and its dependencies</span><br><span class="line">sudo apt-get install rabbitmq-server -y --fix-missing</span><br></pre></td></tr></table></figure>
+<h3 id="1-3-step-3-Add-a-Source-List-File"><a href="#1-3-step-3-Add-a-Source-List-File" class="headerlink" title="1.3. step 3 Add a Source List File"></a>1.3. step 3 Add a Source List File</h3><p>As with all 3rd party apt repositories, a file describing the RabbitMQ and Erlang package repositories must be placed under the <code>/etc/apt/sources.list.d/</code> directory. <code>/etc/apt/sources.list.d/bintray.rabbitmq.list</code> is the recommended location. The file should have a source (repository) definition line that uses the following pattern:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"># Source repository definition example.</span><br><span class="line"># See below for supported distribution and component values</span><br><span class="line"></span><br><span class="line"># Use this line to install the latest Erlang 21.3.x package available</span><br><span class="line">deb https://dl.bintray.com/rabbitmq-erlang/debian $distribution erlang-21.x</span><br><span class="line"></span><br><span class="line"># Or use this line to install the latest Erlang 22.x package available</span><br><span class="line"># deb https://dl.bintray.com/rabbitmq-erlang/debian $distribution erlang</span><br><span class="line"></span><br><span class="line"># This repository provides RabbitMQ packages</span><br><span class="line">deb https://dl.bintray.com/rabbitmq/debian $distribution main</span><br></pre></td></tr></table></figure></p>
+<p>这一步安装，我报错了，但是我看<code>/etc/apt/sources.list.d/bintray.rabbitmq.list</code>里面有要添加的两个源</p>
+<h3 id="1-4-step-4"><a href="#1-4-step-4" class="headerlink" title="1.4. step 4"></a>1.4. step 4</h3><p>To add the apt repository to the source list directory (/etc/apt/sources.list.d), use:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb https://dl.bintray.com/rabbitmq/debian &#123;distribution&#125; main&quot; | sudo tee /etc/apt/sources.list.d/bintray.rabbitmq.list</span><br></pre></td></tr></table></figure></p>
+<p>where {distribution} is the name of the Debian or Ubuntu distribution used (see above).<br>So, on Ubuntu 18.04 the above command becomes<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb https://dl.bintray.com/rabbitmq/debian bionic main&quot; | sudo tee /etc/apt/sources.list.d/bintray.rabbitmq.list</span><br></pre></td></tr></table></figure></p>
+<p>and on Ubuntu 16.04 it would be<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo &quot;deb https://dl.bintray.com/rabbitmq/debian xenial main&quot; | sudo tee /etc/apt/sources.list.d/bintray.rabbitmq.list</span><br></pre></td></tr></table></figure></p>
+<h3 id="1-5-step-5"><a href="#1-5-step-5" class="headerlink" title="1.5. step 5"></a>1.5. step 5</h3><p>It is possible to list multiple repositories, for example, one that provides RabbitMQ and one that provides Erlang/OTP packages. On Ubuntu 18.04 that can be done by modifying the command in the above example like so:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo tee /etc/apt/sources.list.d/bintray.rabbitmq.list &lt;&lt;EOF</span><br><span class="line">deb https://dl.bintray.com/rabbitmq-erlang/debian bionic erlang-21.x</span><br><span class="line">deb https://dl.bintray.com/rabbitmq/debian bionic main</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></p>
+<p>and on Ubuntu 16.04 it would be<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">sudo tee /etc/apt/sources.list.d/bintray.rabbitmq.list &lt;&lt;EOF</span><br><span class="line">deb https://dl.bintray.com/rabbitmq-erlang/debian xenial erlang-21.x</span><br><span class="line">deb https://dl.bintray.com/rabbitmq/debian xenial main</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></p>
+<h3 id="1-6-step-6-Install-RabbitMQ-Package"><a href="#1-6-step-6-Install-RabbitMQ-Package" class="headerlink" title="1.6. step 6 Install RabbitMQ Package"></a>1.6. step 6 Install RabbitMQ Package</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update -y</span><br><span class="line">sudo apt-get install -y rabbitmq-server</span><br></pre></td></tr></table></figure>
+<h2 id="2-配置rabbitmq"><a href="#2-配置rabbitmq" class="headerlink" title="2. 配置rabbitmq"></a>2. 配置rabbitmq</h2><p>admin:用用户名替换<br>password:用你的密码替换<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo rabbitmqctl add_user admin password </span><br><span class="line">sudo rabbitmqctl set_user_tags admin administrator</span><br><span class="line">sudo rabbitmqctl set_permissions -p / admin &quot;.*&quot; &quot;.*&quot; &quot;.*&quot;</span><br></pre></td></tr></table></figure></p>
+<h2 id="3-Port-Access"><a href="#3-Port-Access" class="headerlink" title="3. Port Access"></a>3. Port Access</h2><p>RabbitMQ nodes bind to ports (open server TCP sockets) in order to accept client and CLI tool connections. Other processes and tools such as SELinux may prevent RabbitMQ from binding to a port. When that happens, the node will fail to start. CLI tools, client libraries and RabbitMQ nodes also open connections (client TCP sockets). Firewalls can prevent nodes and CLI tools from communicating with each other. Make sure the following ports are accessible:</p>
+<ul>
+<li>4369: epmd, a peer discovery service used by RabbitMQ nodes and CLI tools</li>
+<li>5672, 5671: used by AMQP 0-9-1 and 1.0 clients without and with TLS</li>
+<li>25672: used for inter-node and CLI tools communication (Erlang distribution server port) and is allocated from a dynamic range (limited to a single port by default, computed as AMQP port + 20000). Unless external connections on these ports are really necessary (e.g. the cluster uses federation or CLI tools are used on machines outside the subnet), these ports should not be publicly exposed. See networking guide for details.</li>
+<li>35672-35682: used by CLI tools (Erlang distribution client ports) for communication with nodes and is allocated from a dynamic range (computed as server distribution port + 10000 through server distribution port + 10010). See networking guide for details.</li>
+<li><ul>
+<li>15672: HTTP API clients, management UI and rabbitmqadmin (only if the management plugin is enabled)<br>61613, 61614: STOMP clients without and with TLS (only if the STOMP plugin is enabled)</li>
+</ul>
+</li>
+<li>1883, 8883: (MQTT clients without and with TLS, if the MQTT plugin is enabled</li>
+<li>15674: STOMP-over-WebSockets clients (only if the Web STOMP plugin is enabled)</li>
+<li>15675: MQTT-over-WebSockets clients (only if the Web MQTT plugin is enabled)<br>It is possible to configure RabbitMQ to use different ports and specific network interfaces.</li>
+</ul>
+<h2 id="4-start-rabbit-mq"><a href="#4-start-rabbit-mq" class="headerlink" title="4. start rabbit mq"></a>4. start rabbit mq</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
+<h2 id="5-消息分配"><a href="#5-消息分配" class="headerlink" title="5. 消息分配"></a>5. 消息分配</h2><p>多个receiver可以同时会平分queue里面的消息，如果每个消息的处理时间不同，就可能存在有空间的receiver，那么可以使用prefetchCount来限制每次发送给receiver消息的个数,prefetchCount=1指的是每次从queue中发送一条消息，等receiver处理完消息后，queue再发送下一条</p>
+<h2 id="6-访问rebbitmq"><a href="#6-访问rebbitmq" class="headerlink" title="6. 访问rebbitmq"></a>6. 访问rebbitmq</h2><p><code>http://47.97.210.227:15672/</code></p>
+<h2 id="7-实例"><a href="#7-实例" class="headerlink" title="7. 实例"></a>7. 实例</h2><h2 id="8-实例1"><a href="#8-实例1" class="headerlink" title="8. 实例1"></a>8. 实例1</h2><ul>
+<li>有一个sender，两个receiver，sender发送t条消息，  </li>
+<li>receiver1的process中有Thread.sleep(x),收到m条  </li>
+<li>receiver2的process中有Thread.sleep(y)，收到n条<br>结果是，receiver1分别接收到了5条消息，receiver1 25秒完成所有消息处理，receiver2 5秒完成消息处理</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>total</th>
+<th>x</th>
+<th>y</th>
+<th>m</th>
+<th>n</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>10</td>
+<td>default</td>
+<td>default</td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td>100</td>
+<td>200</td>
+<td>500</td>
+<td>51</td>
+<td>49</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>100</td>
+<td>100</td>
+<td>500</td>
+<td>500</td>
+</tr>
+<tr>
+<td>400</td>
+<td>100</td>
+<td>200</td>
+<td>232</td>
+<td>168</td>
+</tr>
+<tr>
+<td>400</td>
+<td>1000</td>
+<td>2000</td>
+<td>233</td>
+<td>167</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/05/23/springboot-mybatis/" rel="next" title="springboot-mybatis">
+                <i class="fa fa-chevron-left"></i> springboot-mybatis
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/06/05/ffmpeg-generate-mp4-play-on-ipad/" rel="prev" title="ffmpeg_generate_mp4_play_on_ipad">
+                ffmpeg_generate_mp4_play_on_ipad <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="https://cauyyl-blog.oss-cn-beijing.aliyuncs.com/shanzhi.jpg" alt="cauyyl">
+            
+              <p class="site-author-name" itemprop="name">cauyyl</p>
+              <div class="site-description motion-element" itemprop="description">腰横秋水雁翎刀</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">17</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/cauyyl" title="GitHub &rarr; https://github.com/cauyyl" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/532206446" title="Weibo &rarr; https://weibo.com/532206446" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.cugxuan.cn/" title="http://blog.cugxuan.cn/" rel="noopener" target="_blank">泫</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-ubuntu-install-rabbitmq"><span class="nav-number">1.</span> <span class="nav-text">1. ubuntu install rabbitmq</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-step-1"><span class="nav-number">1.1.</span> <span class="nav-text">1.1. step 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-step-2"><span class="nav-number">1.2.</span> <span class="nav-text">1.2. step 2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-step-3-Add-a-Source-List-File"><span class="nav-number">1.3.</span> <span class="nav-text">1.3. step 3 Add a Source List File</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-step-4"><span class="nav-number">1.4.</span> <span class="nav-text">1.4. step 4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-step-5"><span class="nav-number">1.5.</span> <span class="nav-text">1.5. step 5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-step-6-Install-RabbitMQ-Package"><span class="nav-number">1.6.</span> <span class="nav-text">1.6. step 6 Install RabbitMQ Package</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-配置rabbitmq"><span class="nav-number">2.</span> <span class="nav-text">2. 配置rabbitmq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Port-Access"><span class="nav-number">3.</span> <span class="nav-text">3. Port Access</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-start-rabbit-mq"><span class="nav-number">4.</span> <span class="nav-text">4. start rabbit mq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-消息分配"><span class="nav-number">5.</span> <span class="nav-text">5. 消息分配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-访问rebbitmq"><span class="nav-number">6.</span> <span class="nav-text">6. 访问rebbitmq</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-实例"><span class="nav-number">7.</span> <span class="nav-text">7. 实例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-实例1"><span class="nav-number">8.</span> <span class="nav-text">8. 实例1</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">cauyyl</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.2.0</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="Total Visitors">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="Total Views">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+
+  
+
+  
+
+  
+
+  
+  
+
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+
+<script>
+  var GUEST = ['nick', 'mail', 'link'];
+  var guest = 'nick,mail,link';
+  guest = guest.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#comments',
+    verify: false,
+    notify: false,
+    appId: 'MBPvERe9iTphjBgmTqrhTozf-gzGzoHsz',
+    appKey: 'CLTCJW97cK22y6Sp8Y5On0J4',
+    placeholder: '请留下您的评论！',
+    avatar: 'mm',
+    meta: guest,
+    pageSize: '10' || 10,
+    visitor: false,
+    lang: 'zh-Hans' || 'zh-cn'
+  });
+</script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
