@@ -101,7 +101,7 @@
 <meta property="og:site_name" content="cauyyl&#39;s blog">
 <meta property="og:description" content="本文综合了rabbitmq官网安装文档和一篇博客，成功的安装和配置了rabbitmq">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-09T10:24:53.066Z">
+<meta property="og:updated_time" content="2019-07-11T11:36:17.162Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="rabbitmq">
 <meta name="twitter:description" content="本文综合了rabbitmq官网安装文档和一篇博客，成功的安装和配置了rabbitmq">
@@ -387,7 +387,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-07-09 18:24:53" itemprop="dateModified" datetime="2019-07-09T18:24:53+08:00">2019-07-09</time>
+                <time title="Modified: 2019-07-11 19:36:17" itemprop="dateModified" datetime="2019-07-11T19:36:17+08:00">2019-07-11</time>
               </span>
             
           
@@ -473,7 +473,7 @@
 </ul>
 <h2 id="4-start-rabbit-mq"><a href="#4-start-rabbit-mq" class="headerlink" title="4. start rabbit mq"></a>4. start rabbit mq</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo rabbitmq-plugins enable rabbitmq_management</span><br></pre></td></tr></table></figure>
 <h2 id="5-消息分配"><a href="#5-消息分配" class="headerlink" title="5. 消息分配"></a>5. 消息分配</h2><p>多个receiver可以同时会平分queue里面的消息，如果每个消息的处理时间不同，就可能存在有空间的receiver，那么可以使用prefetchCount来限制每次发送给receiver消息的个数,prefetchCount=1指的是每次从queue中发送一条消息，等receiver处理完消息后，queue再发送下一条</p>
-<h2 id="6-访问rebbitmq"><a href="#6-访问rebbitmq" class="headerlink" title="6. 访问rebbitmq"></a>6. 访问rebbitmq</h2><p><code>http://47.97.210.227:15672/</code></p>
+<h2 id="6-访问rebbitmq"><a href="#6-访问rebbitmq" class="headerlink" title="6. 访问rebbitmq"></a>6. 访问rebbitmq</h2><p><code>http://xx.xx.xxx.xxx:15672/</code></p>
 <h2 id="7-实例"><a href="#7-实例" class="headerlink" title="7. 实例"></a>7. 实例</h2><h2 id="8-实例1"><a href="#8-实例1" class="headerlink" title="8. 实例1"></a>8. 实例1</h2><ul>
 <li>有一个sender，两个receiver，sender发送t条消息，  </li>
 <li>receiver1的process中有Thread.sleep(x),收到m条  </li>
@@ -739,6 +739,10 @@
                 
                   <li class="links-of-blogroll-item">
                     <a href="http://blog.cugxuan.cn/" title="http://blog.cugxuan.cn/" rel="noopener" target="_blank">泫</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://liahu.coding.me/" title="http://liahu.coding.me/" rel="noopener" target="_blank">lxh</a>
                   </li>
                 
               </ul>
