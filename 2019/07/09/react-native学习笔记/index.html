@@ -94,17 +94,17 @@
 
 
 
-  <meta name="description" content="run ios appin project dir ,run commmand react-native run-ios,then the simulator show up,it will run your app automaticily. run android app1234567891011121314151617181920212223#!/bin/bashplatform=&amp;quot">
+  <meta name="description" content="run ios appin project dir ,run commmand react-native run-ios,then the simulator show up,it will run your app automaticily.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cauyyl&#39;s blog">
+<meta property="og:title" content="react-native学习笔记">
 <meta property="og:url" content="http://blog.cauyyl.com/2019/07/09/react-native学习笔记/index.html">
 <meta property="og:site_name" content="cauyyl&#39;s blog">
-<meta property="og:description" content="run ios appin project dir ,run commmand react-native run-ios,then the simulator show up,it will run your app automaticily. run android app1234567891011121314151617181920212223#!/bin/bashplatform=&amp;quot">
+<meta property="og:description" content="run ios appin project dir ,run commmand react-native run-ios,then the simulator show up,it will run your app automaticily.">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-08-02T07:42:00.670Z">
+<meta property="og:updated_time" content="2019-08-02T07:43:35.545Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cauyyl&#39;s blog">
-<meta name="twitter:description" content="run ios appin project dir ,run commmand react-native run-ios,then the simulator show up,it will run your app automaticily. run android app1234567891011121314151617181920212223#!/bin/bashplatform=&amp;quot">
+<meta name="twitter:title" content="react-native学习笔记">
+<meta name="twitter:description" content="run ios appin project dir ,run commmand react-native run-ios,then the simulator show up,it will run your app automaticily.">
 
 
 
@@ -124,7 +124,7 @@
   };
 </script>
 
-  <title> | cauyyl's blog</title>
+  <title>react-native学习笔记 | cauyyl's blog</title>
   
 
 
@@ -346,7 +346,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h1 class="post-title" itemprop="name headline">react-native学习笔记
 
               
             
@@ -387,7 +387,7 @@
                 
                   <span class="post-meta-item-text">Edited on</span>
                 
-                <time title="Modified: 2019-08-02 15:42:00" itemprop="dateModified" datetime="2019-08-02T15:42:00+08:00">2019-08-02</time>
+                <time title="Modified: 2019-08-02 15:43:35" itemprop="dateModified" datetime="2019-08-02T15:43:35+08:00">2019-08-02</time>
               </span>
             
           
@@ -444,7 +444,7 @@
       
 
       
-        <h1 id="run-ios-app"><a href="#run-ios-app" class="headerlink" title="run ios app"></a>run ios app</h1><p>in project dir ,run commmand <code>react-native run-ios</code>,then the simulator show up,it will run your app automaticily.</p>
+        <h1 id="run-ios-app"><a href="#run-ios-app" class="headerlink" title="run ios app"></a>run ios app</h1><p>in project dir ,run commmand <code>react-native run-ios</code>,then the simulator show up,it will run your app automaticily.<br><a id="more"></a></p>
 <h1 id="run-android-app"><a href="#run-android-app" class="headerlink" title="run android app"></a>run android app</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line"></span><br><span class="line">platform=&quot;android&quot;</span><br><span class="line"></span><br><span class="line">if [ $# -ge 1 ] &amp;&amp; [ &quot;$1&quot; == &quot;-h&quot; ]; then</span><br><span class="line">    echo &apos;Usage: run.sh [dev_mod: debug|release] [flavor]&apos;</span><br><span class="line">    exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">if [ $# -ge 1 ]; then</span><br><span class="line">    dev_mod=$1; shift</span><br><span class="line">else</span><br><span class="line">    dev_mod=&quot;debug&quot;</span><br><span class="line">fi</span><br><span class="line">dev_mod=&quot;$(echo $&#123;dev_mod:0:1&#125; | tr  &apos;[a-z]&apos; &apos;[A-Z]&apos;)$&#123;dev_mod:1&#125;&quot;</span><br><span class="line"></span><br><span class="line">if [ $# -ge 1 ]; then</span><br><span class="line">    flavor=$1; shift</span><br><span class="line">else</span><br><span class="line">    flavor=&quot;md&quot;</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">react-native run-$&#123;platform&#125; --variant=$&#123;flavor&#125;$&#123;dev_mod&#125; &quot;$@&quot;</span><br></pre></td></tr></table></figure>
 <h1 id="reload-android-app"><a href="#reload-android-app" class="headerlink" title="reload android app"></a>reload android app</h1><p><code>adb shell input keyevent 82</code></p>
 <h1 id="debug"><a href="#debug" class="headerlink" title="debug"></a>debug</h1><p>if you want to see the content of <code>console.log</code>,you can enable the debug model,<br>in simulator ,use <code>command + D</code> to debug js.</p>
