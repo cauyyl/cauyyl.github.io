@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>从零开始学springboot | cauyyl&#39;s blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="create 2019-3-31 init update 2019-4-16 add maven and pom  update 2019-4-21 add spring transaction and add JUnit annotation">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始学springboot">
+<meta property="og:url" content="http://example.com/2019/04/21/springboot-study/index.html">
+<meta property="og:site_name" content="cauyyl&#39;s blog">
+<meta property="og:description" content="create 2019-3-31 init update 2019-4-16 add maven and pom  update 2019-4-21 add spring transaction and add JUnit annotation">
+<meta property="og:locale">
+<meta property="article:published_time" content="2019-04-21T15:32:19.000Z">
+<meta property="article:modified_time" content="2019-07-09T10:24:53.066Z">
+<meta property="article:author" content="cauyyl">
+<meta property="article:tag" content="springboot java">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="cauyyl's blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">cauyyl&#39;s blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-springboot-study" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2019/04/21/springboot-study/" class="article-date">
+  <time class="dt-published" datetime="2019-04-21T15:32:19.000Z" itemprop="datePublished">2019-04-21</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      从零开始学springboot
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>create 2019-3-31 init</li>
+<li>update 2019-4-16 add maven and pom </li>
+<li>update 2019-4-21 add spring transaction and add JUnit annotation <span id="more"></span></li>
+</ol>
+<h1 id="maven基础知识"><a href="#maven基础知识" class="headerlink" title="maven基础知识"></a>maven基础知识</h1><h2 id="maven中央存储库"><a href="#maven中央存储库" class="headerlink" title="maven中央存储库"></a>maven中央存储库</h2><p>当你创建一个maven项目,maven会检查你的pom.xml文件,以确定下载哪些依赖.首先maven会从本地资源寻找需要依赖的资源,如果找不到,会默认从maven的中央存储库 <code>http://repo1.maven.org/maven2/</code> 查找下载</p>
+<h2 id="为何设置了dependency但是下载失败"><a href="#为何设置了dependency但是下载失败" class="headerlink" title="为何设置了dependency但是下载失败"></a>为何设置了dependency但是下载失败</h2><p>当你声明的库,既不在本地仓库,也不再maven的中央存储库,就会报错.<br>你需要在repository添加远程仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;repositories&gt;</span><br><span class="line">	&lt;repository&gt;</span><br><span class="line">	    &lt;id&gt;xxx&lt;/id&gt;</span><br><span class="line">	    &lt;url&gt;https://xxx&lt;/url&gt;</span><br><span class="line">	&lt;/repository&gt;</span><br><span class="line">&lt;/repositories&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>在此提醒初学者不要急于求成,maven的基础知识还是很重要的,看不懂pom.xml的时候,一定要再看一下maven的文档.</p>
+<h2 id="maven资源库"><a href="#maven资源库" class="headerlink" title="maven资源库"></a>maven资源库</h2><p>maven的库有三种类型：</p>
+<ul>
+<li>local 本地库</li>
+<li>central 中央库</li>
+<li>remote 远程库</li>
+</ul>
+<h2 id="maven插件"><a href="#maven插件" class="headerlink" title="maven插件"></a>maven插件</h2><p>打包成jar、war等</p>
+<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><ol>
+<li>自动下载依赖</li>
+<li>可以添加jar包到本地资源(有很多jar不支持maven) </li>
+<li>一些重要的配置项</li>
+</ol>
+<h2 id="groupId和artifactId的作用"><a href="#groupId和artifactId的作用" class="headerlink" title="groupId和artifactId的作用"></a>groupId和artifactId的作用</h2><ul>
+<li>GroupID是项目组织唯一的标识符,实际对应JAVA的包的结构,是main目录里java的目录结构.<br>ArtifactID就是项目的唯一的标识符,实际对应项目的名称,就是项目根目录的名称.</li>
+<li>一般GroupID就是填com.leafive.test这样子.  </li>
+<li>groupid和artifactId被统称为“坐标”是为了保证项目唯一性而提出的,如果你要把你项目弄到maven本地仓库去,你想要找到你的项目就必须根据这两个id去查找.  </li>
+<li>groupId一般分为多个段,这里我只说两段,第一段为域,第二段为公司名称.域又分为org、com、cn等等许多,其中org为非营利组织,com为商业组织.举个apache公司的tomcat项目例子：这个项目的groupId是org.apache,它的域是org(因为tomcat是非营利项目),公司名称是apache,artigactId是tomcat.</li>
+</ul>
+<h2 id="中文参考资料"><a href="#中文参考资料" class="headerlink" title="中文参考资料"></a>中文参考资料</h2><ol>
+<li><code>https://www.yiibai.com/maven</code></li>
+<li>官网文档<code>https://maven.apache.org/developers/index.html</code></li>
+</ol>
+<h1 id="maven项目"><a href="#maven项目" class="headerlink" title="maven项目"></a>maven项目</h1><h2 id="创建"><a href="#创建" class="headerlink" title="创建"></a>创建</h2><ol>
+<li>可以直接使用maven创建项目</li>
+<li>在IDE中创建项目</li>
+</ol>
+<h2 id="编译时指定jdk版本"><a href="#编译时指定jdk版本" class="headerlink" title="编译时指定jdk版本"></a>编译时指定jdk版本</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> &lt;plugin&gt;</span><br><span class="line">	&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">	&lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">	&lt;version&gt;3.6.0&lt;/version&gt;</span><br><span class="line">	&lt;configuration&gt;</span><br><span class="line">		&lt;source&gt;&#123;jdk.version&#125;&lt;/source&gt;</span><br><span class="line">		&lt;target&gt;1.8&lt;/target&gt;</span><br><span class="line">	&lt;/configuration&gt;</span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="项目命名"><a href="#项目命名" class="headerlink" title="项目命名"></a>项目命名</h2><p>com.name.project_name<br>如:com.deepcare.pano</p>
+<h2 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h2><ul>
+<li><code>mvn site</code> 生成代码报告(文档)</li>
+<li><code>mvn compile</code>编译代码</li>
+<li><code>mvn package</code>将项目打包成war文件</li>
+<li><code>mvn clean</code>清理已经构建生成的文件</li>
+<li><code>mvn clean compile</code>  编译</li>
+<li><code>mvn clean test</code> 测试</li>
+<li><code>mvn clean package</code> 打包</li>
+<li><code>mvn clean install</code> 把生成的jar&#x2F;war包复制到本地repository(就是~&#x2F;.m2&#x2F;- repository下面)</li>
+<li><code>mvn clean deploy</code> 把生成的jar&#x2F;war包发送到远程repository(建议配置了私服,那就是往私服发送了)<br><code>mvn cargo:run</code> 通过cargo插件,把生成的war包部署到本地服务器,并启动.(注意要先运行 mvn clean package 打包)<br><code>mvn cargo:redeploy</code> 通过cargo插件,把生成的war包部署到远程服务器：如果已经有了,就先undeploy再deploy,如果没有直接deploy(注意要先运行 mvn clean package 打包,并且远程服务器是启动的)(怎么配置看Maven Cargo 远程不是到tomcat7x)</li>
+</ul>
+<h1 id="pom-xml"><a href="#pom-xml" class="headerlink" title="pom.xml"></a>pom.xml</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><code>pom.xml</code>的根节点是<code>project</code>,必填的三要素<code>groupId</code>、<code>artifactId</code>、<code>version</code></p>
+<ul>
+<li>project dependencies</li>
+<li>plugins</li>
+<li>goals</li>
+<li>build profiles</li>
+<li>project version</li>
+<li>developers</li>
+<li>mailing list</li>
+</ul>
+<h2 id="常见标签讲解"><a href="#常见标签讲解" class="headerlink" title="常见标签讲解"></a>常见标签讲解</h2><table>
+<thead>
+<tr>
+<th align="left">标签名</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">project</td>
+<td align="left">项目,最外层标签</td>
+</tr>
+<tr>
+<td align="left">properties</td>
+<td align="left">这是一些属性</td>
+</tr>
+<tr>
+<td align="left">repositories</td>
+<td align="left">仓库外层标签</td>
+</tr>
+<tr>
+<td align="left">repository</td>
+<td align="left">仓库</td>
+</tr>
+<tr>
+<td align="left">dependencies</td>
+<td align="left">依赖外层标签</td>
+</tr>
+<tr>
+<td align="left">dependency</td>
+<td align="left">依赖</td>
+</tr>
+<tr>
+<td align="left">build</td>
+<td align="left">编译配置外层标签</td>
+</tr>
+<tr>
+<td align="left">plugins</td>
+<td align="left">插件外层标签</td>
+</tr>
+<tr>
+<td align="left">plugin</td>
+<td align="left">插件</td>
+</tr>
+<tr>
+<td align="left">executions</td>
+<td align="left">元素包含了插件执行需要的信</td>
+</tr>
+</tbody></table>
+<h2 id="依赖配置"><a href="#依赖配置" class="headerlink" title="依赖配置"></a>依赖配置</h2><p>dependency </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;4.12&lt;/version&gt;</span><br><span class="line">    &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure>
+<p>scope 表示在什么时候需要使用到该依赖,并会影响传递依赖<br>scope 的可选值有：  </p>
+<ul>
+<li><p>compile<br>当 scope 未指定时的默认值,在编译,测试,运行时都需要,在所有的类路径都是可用的.</p>
+</li>
+<li><p>provided<br>类似 compile,表示你希望在运行时由 JDK 或者容器去提供这些依赖.例如,当构建一个 web 项目的时候,我们会设置 Servlet API 相关的依赖的 scope 为 provided,因为这些类应该由容器提供.</p>
+</li>
+<li><p>runtime<br>表示依赖在项目运行时需要被使用.<br>-test<br>表示依赖在测试的时候需要被使用.</p>
+</li>
+<li><p>system<br>类似于 provided,但是本地依赖,有时候我们用到一些远程仓库中没有的依赖,就需要使用这个 scope,表示使用本地的依赖.</p>
+</li>
+<li><p>import (在 Maven 2.0.9 或更高版本中可用)<br>此 scope 仅支持 pom 文件中 type 配置为 pom 的依赖,并只能在 <code>&lt;dependencyManagement&gt;</code> 中使用.相当于引入依赖管理.</p>
+</li>
+</ul>
+<h2 id="插件配置"><a href="#插件配置" class="headerlink" title="插件配置"></a>插件配置</h2><p>Maven 所有的工作都是由插件完成的,插件分为两类</p>
+<ul>
+<li>Build plugins 在构建项目的时候执行,应该被配置在<code>&lt;build&gt;</code>元素中</li>
+<li>Reporting plugins 在生成站点的时候执行,应该被配置在<code>&lt;reporting&gt;</code>元素中<br>所有的插件配置要求有三个信息：groupId , artifactId ,version ,这跟依赖的配置相似.类似<code>&lt;dependencyManagement&gt;</code>, 插件配置也有<code>&lt;pluginManagement&gt;</code>,用法也一样,参考依赖管理<br>‘<br><a target="_blank" rel="noopener" href="https://blog.csdn.net/zsensei/article/details/77624596">https://blog.csdn.net/zsensei/article/details/77624596</a><br>看到插件配置</li>
+</ul>
+<h1 id="spring-transaction"><a href="#spring-transaction" class="headerlink" title="spring transaction"></a>spring transaction</h1><h2 id="Spring的编程式事务和声明式事务"><a href="#Spring的编程式事务和声明式事务" class="headerlink" title="Spring的编程式事务和声明式事务"></a>Spring的编程式事务和声明式事务</h2><h3 id="Spring事务管理的两种方式"><a href="#Spring事务管理的两种方式" class="headerlink" title="Spring事务管理的两种方式"></a>Spring事务管理的两种方式</h3><p>spring支持编程式事务管理和声明式事务管理两种方式.</p>
+<ul>
+<li>编程式事务使用TransactionTemplate或者直接使用底层的PlatformTransactionManager.对于编程式事务管理,spring推荐使用TransactionTemplate.</li>
+<li>声明式事务是建立在AOP之上的.其本质是对方法前后进行拦截,然后在目标方法开始之前创建或者加入一个事务,在执行完目标方法之后根据执行情况提交或者回滚事务.声明式事务最大的优点就是不需要通过编程的方式管理事务,这样就不需要在业务逻辑代码中掺杂事务管理的代码,只需在配置文件中做相关的事务规则声明(或通过基于@Transactional注解的方式),便可以将事务规则应用到业务逻辑中.</li>
+</ul>
+<p>显然声明式事务管理要优于编程式事务管理,这正是spring倡导的非侵入式的开发方式.声明式事务管理使业务代码不受污染,一个普通的POJO对象,只要加上注解就可以获得完全的事务支持.和编程式事务相比,声明式事务唯一不足地方是,它的最细粒度只能作用到方法级别,无法做到像编程式事务那样可以作用到代码块级别.但是即便有这样的需求,也存在很多变通的方法,比如,可以将需要进行事务管理的代码块独立为方法等等.</p>
+<p>声明式事务管理也有两种常用的方式,一种是基于tx和aop名字空间的xml配置文件,另一种就是基于@Transactional注解.显然基于注解的方式更简单易用,更清爽.</p>
+<h3 id="spring事务特性"><a href="#spring事务特性" class="headerlink" title="spring事务特性"></a>spring事务特性</h3><p>spring所有的事务管理策略类都继承自<code>org.springframework.transaction.PlatformTransactionManager</code>接口.</p>
+<p>其中<code>TransactionDefinitio</code>接口定义以下特性：</p>
+<h4 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h4><p>隔离级别是指若干个并发的事务之间的隔离程度.TransactionDefinition 接口中定义了五个表示隔离级别的常量：</p>
+<ul>
+<li>TransactionDefinition.ISOLATION_DEFAULT：这是默认值,表示使用底层数据库的默认隔离级别.对大部分数据库而言,通常这值就是TransactionDefinition.ISOLATION_READ_COMMITTED.</li>
+<li>TransactionDefinition.ISOLATION_READ_UNCOMMITTED：该隔离级别表示一个事务可以读取另一个事务修改但还没有提交的数据.该级别不能防止脏读,不可重复读和幻读,因此很少使用该隔离级别.比如PostgreSQL实际上并没有此级别.</li>
+<li>TransactionDefinition.ISOLATION_READ_COMMITTED：该隔离级别表示一个事务只能读取另一个事务已经提交的数据.该级别可以防止脏读,这也是大多数情况下的推荐值.</li>
+<li>TransactionDefinition.ISOLATION_REPEATABLE_READ：该隔离级别表示一个事务在整个过程中可以多次重复执行某个查询,并且每次返回的记录都相同.该级别可以防止脏读和不可重复读.</li>
+<li>TransactionDefinition.ISOLATION_SERIALIZABLE：所有的事务依次逐个执行,这样事务之间就完全不可能产生干扰,也就是说,该级别可以防止脏读、不可重复读以及幻读.但是这将严重影响程序的性能.通常情况下也不会用到该级别.</li>
+</ul>
+<h4 id="事务传播行为"><a href="#事务传播行为" class="headerlink" title="事务传播行为"></a>事务传播行为</h4><p>所谓事务的传播行为是指,如果在开始当前事务之前,一个事务上下文已经存在,此时有若干选项可以指定一个事务性方法的执行行为.在TransactionDefinition定义中包括了如下几个表示传播行为的常量：</p>
+<ul>
+<li>TransactionDefinition.PROPAGATION_REQUIRED：如果当前存在事务,则加入该事务；如果当前没有- 事务,则创建一个新的事务.这是默认值.</li>
+<li>TransactionDefinition.PROPAGATION_REQUIRES_NEW：创建一个新的事务,如果当前存在事务,则- 把当前事务挂起.</li>
+<li>TransactionDefinition.PROPAGATION_SUPPORTS：如果当前存在事务,则加入该事务；如果当前没有- 事务,则以非事务的方式继续运行.</li>
+<li>TransactionDefinition.PROPAGATION_NOT_SUPPORTED：以非事务方式运行,如果当前存在事务,则- 把当前事务挂起.</li>
+<li>TransactionDefinition.PROPAGATION_NEVER：以非事务方式运行,如果当前存在事务,则抛出异- 常.</li>
+<li>TransactionDefinition.PROPAGATION_MANDATORY：如果当前存在事务,则加入该事务；如果当前没- 有事务,则抛出异常.</li>
+<li>TransactionDefinition.PROPAGATION_NESTED：如果当前存在事务,则创建一个事务作为当前事务的嵌套事务来运行；如果当前没有事务,则该取值等价于TransactionDefinition.PROPAGATION_REQUIRED.</li>
+</ul>
+<h4 id="事务超时"><a href="#事务超时" class="headerlink" title="事务超时"></a>事务超时</h4><p>所谓事务超时,就是指一个事务所允许执行的最长时间,如果超过该时间限制但事务还没有完成,则自动回滚事务.在 TransactionDefinition 中以 int 的值来表示超时时间,其单位是秒.</p>
+<p>默认设置为底层事务系统的超时值,如果底层数据库事务系统没有设置超时值,那么就是none,没有超时限制.</p>
+<h4 id="spring事务回滚规则"><a href="#spring事务回滚规则" class="headerlink" title="spring事务回滚规则"></a>spring事务回滚规则</h4><p>默认配置下,spring只有在抛出的异常为运行时unchecked异常时才回滚该事务,也就是抛出的异常为RuntimeException的子类(Errors也会导致事务回滚),而抛出checked异常则不会导致事务回滚.可以明确的配置在抛出哪些异常时回滚事务,包括checked异常.也可以明确定义那些异常抛出时不回滚事务.还可以编程性的通过setRollbackOnly()方法来指示一个事务必须回滚,在调用完setRollbackOnly()后你所能执行的唯一操作就是回滚.</p>
+<h1 id="spring-JUnit4"><a href="#spring-JUnit4" class="headerlink" title="spring JUnit4"></a>spring JUnit4</h1><h2 id="Test注解的两个属性：expected和timeout"><a href="#Test注解的两个属性：expected和timeout" class="headerlink" title="Test注解的两个属性：expected和timeout"></a>Test注解的两个属性：expected和timeout</h2><h3 id="expected属性"><a href="#expected属性" class="headerlink" title="expected属性"></a>expected属性</h3><p>用来指示期望抛出的异常类型.<br>比如除以0的测试：	</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@Test(expected = Exception.class)</span><br><span class="line">public void testDivide() throws Exception</span><br><span class="line">&#123;</span><br><span class="line">    cal.divide(1, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>抛出指定的异常类型,则测试通过 .<br>如果除数改为非0值,则不会抛出异常,测试失败,报Failures.</p>
+<h3 id="timeout属性"><a href="#timeout属性" class="headerlink" title="timeout属性"></a>timeout属性</h3><p>用来指示时间上限.<br>比如把这个属性设置为100毫秒：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">@Test(timeout = 100)</span><br></pre></td></tr></table></figure>
+<p>当测试方法的时间超过这个时间值时测试就会失败.<br>(注意超时了报的是Errors,如果是值错了是Failures).</p>
+<h1 id="lambda"><a href="#lambda" class="headerlink" title="lambda"></a>lambda</h1><p>Lambda表达式是Java SE 8中一个重要的新特性。lambda表达式允许你通过表达式来代替功能接口。 lambda表达式就和方法一样,它提供了一个正常的参数列表和一个使用这些参数的主体(body,可以是一个表达式或一个代码块)。<br>Lambda表达式还增强了集合库。 Java SE 8添加了2个对集合数据进行批量操作的包: java.util.function 包以及java.util.stream 包。 流(stream)就如同迭代器(iterator),但附加了许多额外的功能。 总的来说,lambda表达式和 stream 是自Java语言添加泛型(Generics)和注解(annotation)以来最大的变化。 在本文中,我们将从简单到复杂的示例中见认识lambda表达式和stream的强悍。<br>下面是Java lambda表达式的简单例子:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 1. 不需要参数,返回值为 5  </span><br><span class="line">() -&gt; 5  </span><br><span class="line"></span><br><span class="line">// 2. 接收一个参数(数字类型),返回其2倍的值  </span><br><span class="line">x -&gt; 2 * x  </span><br><span class="line"></span><br><span class="line">// 3. 接受2个参数(数字),并返回他们的差值  </span><br><span class="line">(x, y) -&gt; x – y  </span><br><span class="line"></span><br><span class="line">// 4. 接收2个int型整数,返回他们的和  </span><br><span class="line">(int x, int y) -&gt; x + y  </span><br><span class="line"></span><br><span class="line">// 5. 接受一个 string 对象,并在控制台打印,不返回任何值(看起来像是返回void) </span><br><span class="line">(String s) -&gt; System.out.print(s)</span><br></pre></td></tr></table></figure>
+<p>现在,我们已经知道什么是lambda表达式,让我们先从一些基本的例子开始。 在本节中,我们将看到lambda表达式如何影响我们编码的方式。 假设有一个玩家List ,程序员可以使用 for 语句 (“for 循环”)来遍历,在Java SE 8中可以转换为另一种形式:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">String[] atp = &#123;&quot;Rafael Nadal&quot;, &quot;Novak Djokovic&quot;,  </span><br><span class="line">       &quot;Stanislas Wawrinka&quot;,  </span><br><span class="line">       &quot;David Ferrer&quot;,&quot;Roger Federer&quot;,  </span><br><span class="line">       &quot;Andy Murray&quot;,&quot;Tomas Berdych&quot;,  </span><br><span class="line">       &quot;Juan Martin Del Potro&quot;&#125;;  </span><br><span class="line">List&lt;String&gt; players =  Arrays.asList(atp);  </span><br><span class="line">  </span><br><span class="line">// 以前的循环方式  </span><br><span class="line">for (String player : players) &#123;  </span><br><span class="line">     System.out.print(player + &quot;; &quot;);  </span><br><span class="line">&#125;  </span><br><span class="line">  </span><br><span class="line">// 使用 lambda 表达式以及函数操作(functional operation)  </span><br><span class="line">players.forEach((player) -&gt; System.out.print(player + &quot;; &quot;));  </span><br><span class="line">   </span><br><span class="line">// 在 Java 8 中使用双冒号操作符(double colon operator)  </span><br><span class="line">players.forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+<p>正如您看到的,lambda表达式可以将我们的代码缩减到一行。 另一个例子是在图形用户界面程序中,匿名类可以使用lambda表达式来代替。 同样,在实现Runnable接口时也可以这样使用:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">// 使用匿名内部类  </span><br><span class="line">btn.setOnAction(new EventHandler&lt;ActionEvent&gt;() &#123;  </span><br><span class="line">          @Override  </span><br><span class="line">          public void handle(ActionEvent event) &#123;  </span><br><span class="line">              System.out.println(&quot;Hello World!&quot;);   </span><br><span class="line">          &#125;  </span><br><span class="line">    &#125;);  </span><br><span class="line">   </span><br><span class="line">// 或者使用 lambda expression  </span><br><span class="line">btn.setOnAction(event -&gt; System.out.println(&quot;Hello World!&quot;));</span><br></pre></td></tr></table></figure>
+<p>下面是使用lambdas 来实现 Runnable接口 的示例:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// 1.1使用匿名内部类  </span><br><span class="line">new Thread(new Runnable() &#123;  </span><br><span class="line">    @Override  </span><br><span class="line">    public void run() &#123;  </span><br><span class="line">        System.out.println(&quot;Hello world !&quot;);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;).start();  </span><br><span class="line">  </span><br><span class="line">// 1.2使用 lambda expression  </span><br><span class="line">new Thread(() -&gt; System.out.println(&quot;Hello world !&quot;)).start();  </span><br><span class="line">  </span><br><span class="line">// 2.1使用匿名内部类  </span><br><span class="line">Runnable race1 = new Runnable() &#123;  </span><br><span class="line">    @Override  </span><br><span class="line">    public void run() &#123;  </span><br><span class="line">        System.out.println(&quot;Hello world !&quot;);  </span><br><span class="line">    &#125;  </span><br><span class="line">&#125;;  </span><br><span class="line">  </span><br><span class="line">// 2.2使用 lambda expression  </span><br><span class="line">Runnable race2 = () -&gt; System.out.println(&quot;Hello world !&quot;);  </span><br><span class="line">   </span><br><span class="line">// 直接调用 run 方法(没开新线程哦!)  </span><br><span class="line">race1.run();  </span><br><span class="line">race2.run();</span><br></pre></td></tr></table></figure>
+
+<h1 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h1><h2 id="常用注解"><a href="#常用注解" class="headerlink" title="常用注解"></a>常用注解</h2><ul>
+<li>@Data</li>
+<li>@Builder</li>
+<li>@Slf4j</li>
+<li>@ToString</li>
+<li>@NoArgsConstructor</li>
+<li>@RequiredArgsConstructor</li>
+<li>@AllArgsConstructor</li>
+</ul>
+<h1 id="数据库连接"><a href="#数据库连接" class="headerlink" title="数据库连接"></a>数据库连接</h1><h2 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h2><p>JDBC是各种操作的基础，JPA是个规范，Hibernate是JPA的一种实现，Spring Data JPA用的是Hibernate，MyBatis是另一种ORM的框架，Hibernate不用自己手写SQL，但其实复杂的HQL写到最后跟写SQL也没啥大差别了  </p>
+<p>Java Persistence API  Java持久层API</p>
+<ul>
+<li>用于对象持久化的 API</li>
+</ul>
+<h3 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h3><p>使得应用程序以统一的方式访问持久层</p>
+<h3 id="JPA和hibernate的关系"><a href="#JPA和hibernate的关系" class="headerlink" title="JPA和hibernate的关系"></a>JPA和hibernate的关系</h3><ol>
+<li>JPA 是 Hibernate 的一个抽象，就像 JDBC 和 JDBC 驱动的关系</li>
+<li>JPA 是一种 ORM 规范，是 Hibernate 功能的一个子集 (既然 JPA 是规范，Hibernate 对 JPA 进行了扩展，那么说 JPA 是 Hibernate 的一个子集不为过)</li>
+<li>Hibernate 是 JPA 的一个实现</li>
+</ol>
+<h3 id="JPA-包括三个方面的技术"><a href="#JPA-包括三个方面的技术" class="headerlink" title="JPA 包括三个方面的技术"></a>JPA 包括三个方面的技术</h3><ol>
+<li>ORM 映射元数据，支持 XML 和 JDK 注解两种元数据的形式</li>
+<li>JPA 的 API</li>
+<li>查询语言：JPQL</li>
+</ol>
+<h1 id="消息队列-MQ"><a href="#消息队列-MQ" class="headerlink" title="消息队列(MQ)"></a>消息队列(MQ)</h1><h1 id="Joda-Money"><a href="#Joda-Money" class="headerlink" title="Joda Money"></a>Joda Money</h1><p>需要<code>usertype.core</code>配合实现映射<br>在存储金额之类的数据时，不建议使用float，推荐使用money</p>
+<p>Joda-Money provides simple value types, representing currency and money.</p>
+<p>The project does not provide, nor is it intended to provide, monetary algorithms beyond the most basic and obvious. This is because the requirements for these algorithms vary widely between domains. This library is intended to act as the base layer, providing classes that should be in the JDK.</p>
+<p>As a flavour of Joda-Money, here is some example code:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// create a monetary value</span><br><span class="line">Money money = Money.parse(&quot;USD 23.87&quot;);</span><br><span class="line"></span><br><span class="line">// add another amount with safe double conversion</span><br><span class="line">CurrencyUnit usd = CurrencyUnit.of(&quot;USD&quot;);</span><br><span class="line">money = money.plus(Money.of(usd, 12.43d));</span><br><span class="line"></span><br><span class="line">// subtracts an amount in dollars</span><br><span class="line">money = money.minusMajor(2);</span><br><span class="line"></span><br><span class="line">// multiplies by 3.5 with rounding</span><br><span class="line">money = money.multipliedBy(3.5d, RoundingMode.DOWN);</span><br><span class="line"></span><br><span class="line">// compare two amounts</span><br><span class="line">boolean bigAmount = money.isGreaterThan(dailyWage);</span><br><span class="line"></span><br><span class="line">// convert to GBP using a supplied rate</span><br><span class="line">BigDecimal conversionRate = ...;  // obtained from code outside Joda-Money</span><br><span class="line">Money moneyGBP = money.convertedTo(CurrencyUnit.GBP, conversionRate, RoundingMode.HALF_UP);</span><br><span class="line"></span><br><span class="line">// use a BigMoney for more complex calculations where scale matters</span><br><span class="line">BigMoney moneyCalc = money.toBigMoney();</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2019/04/21/springboot-study/" data-id="cl6vxxj64000oq0mqfybq8rqa" data-title="从零开始学springboot" class="article-share-link">Teilen</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/springboot-java/" rel="tag">springboot java</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/05/15/virtualbox-error/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          virtualbox-error
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/18/dplayer/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">dplayer</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/JAVA-dicom3-0-tags-convert/" rel="tag">JAVA dicom3.0 tags convert</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ffmpeg-mp4-ipad/" rel="tag">ffmpeg mp4 ipad</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/file-listening/" rel="tag">file listening</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java-tif-png-convert/" rel="tag">java tif png convert</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springbooot/" rel="tag">springbooot</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/springboot-java/" rel="tag">springboot java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/thinkphp-pdf/" rel="tag">thinkphp pdf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/virtualbox/" rel="tag">virtualbox</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/JAVA-dicom3-0-tags-convert/" style="font-size: 10px;">JAVA dicom3.0 tags convert</a> <a href="/tags/ffmpeg-mp4-ipad/" style="font-size: 10px;">ffmpeg mp4 ipad</a> <a href="/tags/file-listening/" style="font-size: 10px;">file listening</a> <a href="/tags/java-tif-png-convert/" style="font-size: 10px;">java tif png convert</a> <a href="/tags/springbooot/" style="font-size: 10px;">springbooot</a> <a href="/tags/springboot-java/" style="font-size: 10px;">springboot java</a> <a href="/tags/thinkphp-pdf/" style="font-size: 10px;">thinkphp pdf</a> <a href="/tags/virtualbox/" style="font-size: 10px;">virtualbox</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/08/">August 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/07/">July 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/06/">June 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/05/">May 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/04/">April 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/03/">March 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/08/16/2022%E5%B9%B4%E4%B8%AD%E5%B0%8F%E8%AE%B0/">2022年中小记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/09/hexo/">hexo</a>
+          </li>
+        
+          <li>
+            <a href="/2019/07/09/react-native%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">react-native学习笔记</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/12/springboot-v1%E5%92%8Cv2%E4%B8%A4%E4%B8%AA%E7%89%88%E6%9C%AC%E6%89%93%E5%8C%85%E7%9A%84%E5%8C%BA%E5%88%AB/">springboot_v1和v2两个版本打包的区别</a>
+          </li>
+        
+          <li>
+            <a href="/2019/06/05/ffmpeg-generate-mp4-play-on-ipad/">ffmpeg_generate_mp4_play_on_ipad</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 cauyyl<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
